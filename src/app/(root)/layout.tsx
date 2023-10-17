@@ -19,9 +19,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+    // <ClerkProviderがない></ClerkProviderがない>
     <html lang="en">
       <body className={inter.className}>
         <Topbar />
+
         <main className="flex flex-row">
           <LeftSidebar />
           <section className="main-container">

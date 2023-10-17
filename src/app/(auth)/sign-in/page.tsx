@@ -2,9 +2,24 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 
+type FormData = {
+  email: string;
+  password: String;
+};
+
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
+  const { name, ref, onChange, onBlur } = register("email");
+
+  const onSubmit = handleSubmit((data) => console.log(data));
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [users, setUsers] = useState<{ email: string; name: string }[]>([]);
@@ -74,7 +89,27 @@ const Login = () => {
 
   return (
     <>
-      <div>
+      <div className="App">
+        <h1>ログイン</h1>
+        <form onSubmit={onSubmit}>
+          <div>
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              name={name}
+              onChange={onChange}
+              onBlur={onBlur}
+              ref={ref}
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Password</label>
+            <input id="password" {...register("password")} type="password" />
+          </div>
+          <button type="submit">ログイン</button>
+        </form>
+      </div>
+      {/* <div>
         <input
           type="email"
           value={email}
@@ -228,7 +263,7 @@ const Login = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 };
