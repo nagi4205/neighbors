@@ -1,5 +1,6 @@
 "use client";
 
+import { ScrollArea } from "@radix-ui/themes";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -59,9 +60,15 @@ function Home({
                   </h4>
                 </Link>
 
-                <p className="mt-2 text-small-regular text-light-2">
-                  青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ
-                </p>
+                <ScrollArea
+                  type="hover"
+                  scrollbars="vertical"
+                  style={{ height: 60 }}
+                >
+                  <p className="mt-2 text-small-regular text-light-2">
+                    青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ青春の一ページ
+                  </p>
+                </ScrollArea>
 
                 <div className="mb-10 mt-5 flex flex-col gap-3">
                   <div className="flex gap-3.5">

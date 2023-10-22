@@ -55,7 +55,7 @@ const http = axios.create({
 
 const page = () => {
   console.log("naa");
-  return <div>{/* <button onClick={handleLikeEvent}>ばなな</button> */}</div>;
+  return <></>;
 };
 
 export default page;
