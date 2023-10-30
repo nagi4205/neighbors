@@ -1,28 +1,28 @@
-"use client";
+'use client';
 // not installed
 // import { OrganizationSwitcher, SignedIn, SignOutButton } from "@clerk/nextjs";
 // import { dark } from "@clerk/themes";
-import Image from "next/image";
-import Link from "next/link";
-import { useAuthContext } from "../../app/context/auth";
-import { useQuery } from "@tanstack/react-query";
-import { CLIENT_STATIC_FILES_RUNTIME_POLYFILLS_SYMBOL } from "next/dist/shared/lib/constants";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useAuthContext } from '../../app/context/auth';
+import { useQuery } from '@tanstack/react-query';
+import { CLIENT_STATIC_FILES_RUNTIME_POLYFILLS_SYMBOL } from 'next/dist/shared/lib/constants';
 
 function Topbar() {
   // const { isLoggedIn } = useAuthContext();
 
   const fetchUserInfo = async () => {
-    console.log("on fetchUserInfo");
-    const res = await fetch("http://localhost/api/profile", {
-      credentials: "include", // Laravel Sanctum とのクッキーを使った認証をサポートするため
-      method: "GET",
+    console.log('on fetchUserInfo');
+    const res = await fetch('http://localhost/api/profile', {
+      credentials: 'include', // Laravel Sanctum とのクッキーを使った認証をサポートするため
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
     console.log(res);
     if (!res.ok) {
-      throw new Error("Failed to fetch user info");
+      throw new Error('Failed to fetch user info');
     }
     return res.json();
   };
@@ -38,20 +38,21 @@ function Topbar() {
   // });
 
   return (
-    <nav className="topbar">
-      <Link href="/" className="flex items-center gap-4">
-        <Image src="assets/logo.svg" alt="logo" width={28} height={28} />
-        <p className="text-heading3-bold text-light-1 max-xs:hidden animate-bounce duration-50 repeat-[5]">
+    <nav className='topbar'>
+      {/* // <nav className='fixed top-0 z-30 flex w-full items-center justify-between bg-[#121417] px-6 py-3'> */}
+      <Link href='/' className='flex items-center gap-4'>
+        <Image src='assets/logo.svg' alt='logo' width={28} height={28} />
+        <p className='text-heading3-bold text-[#FFFFFF] max-xs:hidden animate-bounce duration-50 repeat-[5]'>
           Neighbors
         </p>
       </Link>
 
-      <div className="flex items-center gap-1">
-        <div className="block md:hidden">
-          <div className="flex cursor-pointer">
+      <div className='flex items-center gap-1'>
+        <div className='block md:hidden'>
+          <div className='flex cursor-pointer'>
             <Image
-              src="/assets/logout.svg"
-              alt="logout"
+              src='/assets/logout.svg'
+              alt='logout'
               width={24}
               height={24}
             />

@@ -1,18 +1,19 @@
 // not installed
 // import { currentUser } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
+import { redirect } from 'next/navigation';
 
 // not created
-import PostCard from "@/components/cards/PostCard";
+import PostCard from '@/components/cards/PostCard';
 // import Pagination from "@/components/shared/Pagination";
 
 // not created
-import PostList from "@/lib/actions/post.action";
+import PostList from '@/lib/actions/post.action';
 
-import InputForm from "@/components/forms/InputForm";
-import Link from "next/link";
-import Image from "next/image";
-import { Button, Dialog, Flex, Text, TextField } from "@radix-ui/themes";
+import InputForm from '@/components/forms/InputForm';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
+
 // import { fetchUser } from "@/lib/actions/user.actions";
 
 async function Home({
@@ -22,16 +23,15 @@ async function Home({
 }) {
   // const user = await currentUser();
   // if (!user) return null;
-  console.log("ぐみ");
+  console.log('ぐみ');
   // const userInfo = await fetchUser(user.id);
   // if (!userInfo?.onboarded) redirect("/onboarding");
-
   return (
     <>
-      <h1 className="head-text text-left">Home</h1>
+      <h1 className='head-text text-left'>Home</h1>
 
-      <section className="mt-9 flex flex-col gap-4">
-        <p className="no-result">No threads found</p>
+      <section className='mt-9 flex flex-col gap-4'>
+        <p className='text-light-1'>No threads found</p>
 
         <PostList />
 
