@@ -12,7 +12,9 @@ module.exports = {
       center: true,
       padding: '2rem',
       screens: {
-        '2xl': '1400px',
+        lg: '1280px',
+        xl: '1280px',
+        '2xl': '1280px',
       },
     },
     fontSize: {
@@ -242,11 +244,16 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        // Custom colorsを追加butombar
+        'custom-gray': 'rgba(16, 16, 18, 0.60)',
       },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+      },
+      screens: {
+        xs: '400px',
       },
       keyframes: {
         'accordion-down': {

@@ -1,31 +1,33 @@
+import { Home, Search, PenLine, Heart, Users } from 'lucide-react';
+
 export const sidebarLists = [
   {
     type: 'link',
-    imgURL: '/assets/home.svg',
-    route: '/',
+    iconComponent: <Home />,
+    route: '/home',
     label: 'Home',
   },
   {
     type: 'link',
-    imgURL: '/assets/search.svg',
+    iconComponent: <Search />,
     route: '/search',
     label: 'Search',
   },
   {
     type: 'button',
-    imgURL: '/assets/note-pencil.svg',
+    iconComponent: <PenLine />,
     route: '/create-thread',
     label: 'Create Thread',
   },
   {
     type: 'link',
-    imgURL: '/assets/heart.svg',
+    iconComponent: <Heart />,
     route: '/activity',
     label: 'Activity',
   },
   {
     type: 'link',
-    imgURL: '/assets/community.svg',
+    iconComponent: <Users />,
     route: '/communities',
     label: 'Communities',
   },

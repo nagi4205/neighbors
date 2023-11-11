@@ -1,3 +1,4 @@
+'use client';
 // not installed
 // import { currentUser } from "@clerk/nextjs";
 import { redirect } from 'next/navigation';
@@ -5,7 +6,7 @@ import { redirect } from 'next/navigation';
 // not created
 import PostCard from '@/components/cards/PostCard';
 // import Pagination from "@/components/shared/Pagination";
-
+import { useState, useEffect } from 'react';
 // not created
 import PostList from '@/lib/actions/post.action';
 
@@ -16,14 +17,42 @@ import { Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
 
 // import { fetchUser } from "@/lib/actions/user.actions";
 
-async function Home({
+function Home({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
 }) {
   // const user = await currentUser();
   // if (!user) return null;
-  console.log('ぐみ');
+
+  //あとで消す
+  // useEffect(() => {
+  //   // history.pushStateを使って新しい履歴エントリを追加
+  //   if (showDetail) {
+  //     window.history.pushState(null, '', '#detail');
+  //   }
+
+  //   const handlePopState = (e) => {
+  //     // showDetailの状態を変更する
+  //     setShowDetail(window.location.hash === '#detail');
+  //   };
+
+  //   // popstateイベントリスナを追加
+  //   window.addEventListener('popstate', handlePopState);
+
+  //   return () => {
+  //     // イベントリスナをクリーンアップ
+  //     window.removeEventListener('popstate', handlePopState);
+  //   };
+  // }, [showDetail]);
+  // const handleArticleClick = () => {
+  //   setShowDetail(true);
+  // };
+
+  const handleBackClick = () => {
+    // 履歴のエントリを1つ戻る
+    window.history.back();
+  };
   // const userInfo = await fetchUser(user.id);
   // if (!userInfo?.onboarded) redirect("/onboarding");
   return (
@@ -31,9 +60,22 @@ async function Home({
       <h1 className='head-text text-left'>Home</h1>
 
       <section className='mt-9 flex flex-col gap-4'>
-        <p className='text-light-1'>No threads found</p>
+        <p className='no-result'>No threads found</p>
+        {/* <PostList /> */}
 
+        {/* {!showDetail ? (
+          <article
+            className='flex w-full flex-col rounded-xl bg-blue-200 p-7 hover:bg-gray-50 cursor-pointer'
+            onClick={handleArticleClick}
+          >
+          <div>一覧画面サンプル</div>
+          </article> */}
         <PostList />
+        {/* ) : (
+          <div className='detail-component'>
+            <button onClick={handleBackClick}>戻る</button>
+          </div>
+        )} */}
 
         {/* <InputForm /> */}
 

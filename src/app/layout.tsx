@@ -1,13 +1,17 @@
 import './globals.css';
-import '@radix-ui/themes/styles.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Topbar from '@/components/shared/Topbar';
 import LeftSidebar from '@/components/shared/LeftSidebar';
+import RightSidebar from '@/components/shared/RightSidebar';
 import Bottombar from '@/components/shared/Bottombar';
 import { Theme } from '@radix-ui/themes';
 import { AuthProvider } from './context/auth';
+// import { Toaster } from '@/components/ui/toaster';
+import { Toaster } from 'sonner';
 import { NextAuthProvider } from '@/providers/NextAuth';
+import { ThemeProvider } from '@/components/theme-provider';
+import { QueryProvider } from '@/lib/tanstack-query/QueryProvider';
 
 // import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // import RightSidebar from "@/components/shared/RightSidebar";
@@ -29,23 +33,28 @@ export default function RootLayout({
       {/* <AuthProvider> */}
       <body className={inter.className}>
         <NextAuthProvider>
-          <Theme
-            accentColor='grass'
-            grayColor='sand'
-            radius='large'
-            scaling='95%'
-          >
-            {/* <Topbar /> */}
-            <main className='flex flex-row'>
-              <LeftSidebar />
-              <section className='flex min-h-screen flex-1 flex-col items-center bg-[#000000] px-6 pb-10 pt-28 max-md:pb-32 sm:px-10'>
-                <div className='w-full max-w-4xl'>{children}</div>
-              </section>
-              {/* @ts-ignore */}
-              {/* <RightSidebar /> */}
-            </main>
-            <Bottombar />
-          </Theme>
+          <QueryProvider>
+            <ThemeProvider
+              attribute='class'
+              defaultTheme='system'
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Topbar />
+              <main className='flex flex-row container mx-auto '>
+                {/* <div className='w-full h-full flex justify-center items-center relative bg-white text-black dark:bg-black dark:text-white'>
+              <div className='xl:max-w-[70vw] w-full h-full flex relative'> */}
+                <LeftSidebar />
+                <section className='flex min-h-screen flex-1 flex-col items-center px-6 pb-10 pt-28 max-md:pb-32 sm:px-10'>
+                  <div className='w-full max-w-4xl'>{children}</div>
+                </section>
+                {/* @ts-ignore */}
+                <RightSidebar />
+              </main>
+              <Bottombar />
+              <Toaster position='top-center' />
+            </ThemeProvider>
+          </QueryProvider>
         </NextAuthProvider>
       </body>
       {/* </AuthProvider> */}

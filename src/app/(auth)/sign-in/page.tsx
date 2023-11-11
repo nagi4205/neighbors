@@ -21,6 +21,11 @@ const SignIn = () => {
 
   const { data: session } = useSession();
 
+  const getXSRFTokenFromCookie = () => {
+    const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
+    return match ? match[1] : null;
+  };
+
   const { name, ref, onChange, onBlur } = register('email');
 
   const onSubmit = handleSubmit((data) => console.log(data));
@@ -52,7 +57,8 @@ const SignIn = () => {
           // setIsLoggedIn(true);
           console.log(res.status);
           setTimeout(() => {
-            router.push('/home');
+            // router.push('/home');
+            console.log('ログイン成功');
           }, 1000);
         }
       });
@@ -74,12 +80,19 @@ const SignIn = () => {
       //   console.error('No session or accessToken found');
       //   return;
       // }
+      const xsrfToken = getXSRFTokenFromCookie();
+
+      if (!xsrfToken) {
+        throw new Error("Couldn't retrieve the XSRF token from cookie.");
+      }
 
       const response = await fetch('http://localhost/api/users', {
+        method: 'GET',
         credentials: 'include',
         headers: {
-          // "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Accept: 'application/json',
+          'X-XSRF-TOKEN': xsrfToken,
         },
       });
       console.log('Response Status:', response.status);

@@ -2,12 +2,14 @@
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { data: session } = useSession();
 
+  const router = useRouter();
   // セッションが更新されるたびにコンソールにログを出力する
   useEffect(() => {
     if (session) {
@@ -34,6 +36,7 @@ function SignIn() {
       // エラーメッセージを表示
       console.log(result);
       console.error('log-inできたってこと？');
+      // router.push('/home');
     }
   };
 

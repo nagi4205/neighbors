@@ -7,6 +7,11 @@ import PostItem from './PostItem';
 import Link from 'next/link';
 import { Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
 import Notification from '@/components/Notification';
+import {
+  useGeolocation,
+  useGetPostsByGeolocation,
+} from '@/lib/tanstack-query/queries';
+import Loader from '@/components/shared/Loader';
 
 const http = axios.create({
   baseURL: 'http://localhost',
@@ -45,6 +50,27 @@ const http = axios.create({
 //   }
 // };
 
+export const getGeolocation = async (): Promise<GeolocationData> => {
+  return new Promise<GeolocationData>((resolve, reject) => {
+    console.log('lib/actions/post.action::getGeolocation()');
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          resolve({
+            latitude: parseFloat(position.coords.latitude.toFixed(3)),
+            longitude: parseFloat(position.coords.longitude.toFixed(3)),
+          });
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } else {
+      reject(new Error('Geolocation is not supported by this browser.'));
+    }
+  });
+};
+
 const handleLikeEvent = async (postId: string, userId: string) => {
   try {
     const response = await axios.post(
@@ -77,66 +103,96 @@ const handleLikeEvent = async (postId: string, userId: string) => {
   }
 };
 
-const fetchPostsWithGeolocation = async (): Promise<Post[]> => {
-  return new Promise((resolve, reject) => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          try {
-            const geolocationInfo: GeolocationInfo = {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-              radius: 4,
-            };
+// コメントアウト消す
+// const fetchPostsWithGeolocation = async (): Promise<Post[]> => {
+//   const getXSRFTokenFromCookie = () => {
+//     const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
+//     return match ? match[1] : null;
+//   };
+//   const xsrfToken = getXSRFTokenFromCookie();
 
-            const params = new URLSearchParams({
-              latitude: geolocationInfo.latitude.toString(),
-              longitude: geolocationInfo.longitude.toString(),
-              radius: geolocationInfo.radius.toString(),
-            });
+//   return new Promise((resolve, reject) => {
+//     if (navigator.geolocation) {
+//       navigator.geolocation.getCurrentPosition(
+//         async (position) => {
+//           try {
+//             const geolocationInfo: GeolocationInfo = {
+//               latitude: parseFloat(position.coords.latitude.toFixed(3)),
+//               longitude: parseFloat(position.coords.longitude.toFixed(3)),
+//               radius: 4,
+//             };
 
-            const response = await axios.get(
-              `http://localhost/api/posts?${params}`,
-              {
-                withCredentials: true,
-                headers: {
-                  'Content-Type': 'application/json',
-                  Accept: 'application/json',
-                },
-              }
-            );
+//             const params = new URLSearchParams({
+//               latitude: geolocationInfo.latitude.toString(),
+//               longitude: geolocationInfo.longitude.toString(),
+//               radius: geolocationInfo.radius.toString(),
+//             });
 
-            const data = response.data;
-            console.log(response.request);
-            console.log(response.data);
-            console.log(geolocationInfo);
-            console.log(JSON.stringify(geolocationInfo));
+//             const headers: Record<string, string> = {
+//               'Content-Type': 'application/json',
+//               Accept: 'application/json',
+//             };
 
-            const posts: Post[] = await response.data;
-            resolve(posts);
-          } catch (error) {
-            if (axios.isAxiosError(error)) {
-              if (error.request) {
-                console.error('Error Request:', error.request);
-              } else {
-                console.error('Error:', error.message);
-              }
-            } else {
-              console.error('Unknown error:', error);
-            }
+//             // if (xsrfToken) {
+//             //   headers['X-XSRF-TOKEN'] = xsrfToken;
+//             //   console.log('xsrfTokenがありました。:', xsrfToken);
+//             // }
 
-            reject(error);
-          }
-        },
-        (error) => {
-          reject(error);
-        }
-      );
-    } else {
-      reject(new Error('Geolocation is not supported by this browser.'));
-    }
-  });
-};
+//             const response = await fetch(
+//               `http://localhost/api/posts?${params}`,
+//               {
+//                 method: 'GET',
+//                 credentials: 'include',
+//                 headers: headers,
+//               }
+//             );
+
+//             const data = response.json();
+//             console.log(data);
+//             console.log(geolocationInfo);
+//             console.log(JSON.stringify(geolocationInfo));
+
+//             const posts: Post[] = await data;
+//             resolve(posts);
+//           } catch (error) {
+//             if (axios.isAxiosError(error)) {
+//               if (error.request) {
+//                 console.error('Error Request:', error.request);
+//               } else {
+//                 console.error('Error:', error.message);
+//               }
+//             } else {
+//               console.error('Unknown error:', error);
+//             }
+
+//             reject(error);
+//           }
+//         },
+//         (error) => {
+//           reject(error);
+//         }
+//       );
+//     } else {
+//       reject(new Error('Geolocation is not supported by this browser.'));
+//     }
+//   });
+// };
+
+// コメントアウト外す、多分いらない
+// const SearchResults = ({
+//   isLoading,
+//   postsByGeolocation,
+// }: SearchResultProps) => {
+//   if (isLoading) {
+//     return <Loader />;
+//   } else if (postsByGeolocation && postsByGeolocation.documents.length > 0) {
+//     return <GridPostList posts={searchedPosts.documents} />;
+//   } else {
+//     return (
+//       <p className='text-light-4 mt-10 text-center w-full'>No results found</p>
+//     );
+//   }
+// };
 
 const PostList = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -149,11 +205,32 @@ const PostList = () => {
     visible: false,
   });
 
+  // First, get the geolocation data
+
+  const {
+    data: geolocationData,
+    isError: isGeoError,
+    isLoading: isGeoLoading,
+  } = useGeolocation();
+
+  // Then, pass the geolocation data to the useGetPostsByGeolocation hook.
+  // This hook will only run if geolocationData is defined (i.e., geolocation fetch was successful).
+  const {
+    data: postsByGeolocation,
+    isError: isPostsError,
+    isLoading: isPostsLoading,
+  } = useGetPostsByGeolocation(geolocationData);
+
+  console.log(postsByGeolocation);
   const fetchGeolocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        setLatitude(position.coords.latitude);
-        setLongitude(position.coords.longitude);
+        const roundedLatitude = parseFloat(position.coords.latitude.toFixed(3));
+        const roundedLongitude = parseFloat(
+          position.coords.longitude.toFixed(3)
+        );
+        setLatitude(roundedLatitude);
+        setLongitude(roundedLongitude);
       });
     } else {
       console.error('Geolocation is not supported by this browser.');
@@ -185,25 +262,31 @@ const PostList = () => {
       console.error('Error:', error);
     }
   };
+  console.log(isPostsLoading);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const fetchedPosts = await fetchPostsWithGeolocation(); // getAllPostsを非同期で呼び出し
-        console.log(fetchedPosts);
-        setPosts(fetchedPosts);
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-      }
-    };
+  if (isPostsLoading)
+    return (
+      <div className='flex-center w-full h-full'>
+        <Loader />
+      </div>
+    );
+  // useEffect(() => {
+  //   const fetchPosts = async () => {
+  //     try {
+  //       const fetchedPosts = await fetchPostsWithGeolocation(); // getAllPostsを非同期で呼び出し
+  //       console.log(fetchedPosts);
+  //       setPosts(fetchedPosts);
+  //     } catch (error) {
+  //       console.error('Error fetching posts:', error);
+  //     }
+  //   };
 
-    fetchPosts();
-  }, []);
+  //   fetchPosts();
+  // }, []);
 
   return (
     <>
-      <div className='bg-red-500'>dddd</div>
-      {posts.map((post) => (
+      {postsByGeolocation?.map((post) => (
         <PostItem
           key={post.id}
           {...post}

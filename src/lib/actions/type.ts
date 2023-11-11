@@ -4,6 +4,11 @@ type GeolocationInfo = {
   radius: number;
 };
 
+type GeolocationData = {
+  latitude: number;
+  longitude: number;
+};
+
 type User = {
   id: string;
   name: string;
@@ -19,4 +24,9 @@ type Post = {
   created_at: string;
   user: User;
   likedCount: number;
+};
+
+type NewPost = {
+  GeolocationData?: GeolocationData;
+  content: string;
 };

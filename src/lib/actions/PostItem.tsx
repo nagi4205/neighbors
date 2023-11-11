@@ -12,8 +12,9 @@ import {
   Text,
   TextField,
 } from '@radix-ui/themes';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation';
 
 type NotificationType = {
   message: string;
@@ -41,6 +42,7 @@ const PostItem: React.FC<
   const [liked, setLiked] = useState(hasLiked);
   const [likedNumber, setLikedNumber] = useState(likedCount);
   const [updateContent, setUpdateContent] = useState(content);
+  const router = useRouter();
 
   const handleLike = async () => {
     try {
@@ -160,12 +162,6 @@ const PostItem: React.FC<
       });
     };
 
-    toast.promise(deleteRequest(), {
-      pending: '削除中...',
-      success: '投稿を削除しました。', // <-- 固定の成功メッセージ
-      error: '投稿の削除に失敗しました。',
-    });
-
     // エラーハンドリングや追加の処理を行う場合
     deleteRequest()
       .then((response) => {
@@ -209,19 +205,19 @@ const PostItem: React.FC<
     }
   };
 
-  const notify = () => toast('Wow so easy!', { position: 'top-center' });
+  const handleNavigateToPostDetail = () => {
+    // 投稿の詳細ページへ遷移する
+    router.push(`${user.name}/post/${id}`);
+  };
 
   return (
     <>
-      <article className='flex w-full flex-col rounded-xl bg-dark-2 p-7'>
+      <article
+        className='flex w-full flex-col rounded-xl p-7 hover:bg-blue-50 dark:hover:bg-gray-950'
+        onClick={handleNavigateToPostDetail}
+      >
         <div className='flex items-start justify-between'>
           <div className='flex w-full flex-1 flex-row gap-4'>
-            <div>
-              <button onClick={notify} className='text-light-2'>
-                Notify!
-              </button>
-              <ToastContainer />
-            </div>
             <div className='flex flex-col items-center'>
               <Link href='/' className='relative h-11 w-11'>
                 <Image
@@ -234,6 +230,7 @@ const PostItem: React.FC<
                   alt='user_community_image'
                   fill
                   className='cursor-pointer rounded-full'
+                  onClick={(e) => e.stopPropagation()}
                 />
               </Link>
               <div className='thread-card_bar' />
@@ -260,7 +257,6 @@ const PostItem: React.FC<
                     <button onClick={deletePost} className='border'>
                       Delete
                     </button>
-                    <ToastContainer />
                   </div>
                   <Dialog.Root>
                     <Dialog.Trigger>

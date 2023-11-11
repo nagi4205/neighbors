@@ -1,8 +1,8 @@
 // 一度、use clientを使わずにやってみる
-"use client";
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import axios from "axios";
+'use client';
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import axios from 'axios';
 
 type GeolocationInfo = {
   latitude: number;
@@ -21,7 +21,7 @@ type Post = {
 };
 
 const http = axios.create({
-  baseURL: "http://localhost",
+  baseURL: 'http://localhost',
   withCredentials: true,
 });
 
@@ -60,15 +60,15 @@ const http = axios.create({
 const handleLikeEvent = async (postId: string, userId: string) => {
   try {
     const response = await axios.post(
-      "http://localhost/api/likes",
+      'http://localhost/api/likes',
       {
         post_id: postId,
         user_id: userId,
       },
       {
         headers: {
-          "Content-Type": "application/json",
-          "X-Requested-With": "XMLHttpRequest",
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
         },
         withCredentials: true, // axios でクッキーを含めるためにはこのオプションを指定します。
       }
@@ -77,15 +77,15 @@ const handleLikeEvent = async (postId: string, userId: string) => {
     console.log(response.data); // log the response data for debugging
 
     // Now, based on the response, you can update the UI accordingly.
-    if (response.data.status === "liked") {
+    if (response.data.status === 'liked') {
       // setLikeStatus(postId)
-      console.log("いいねしました。");
+      console.log('いいねしました。');
     } else {
       // Update the UI to reflect that the post was unliked
-      console.log("いいねを外しました。");
+      console.log('いいねを外しました。');
     }
   } catch (error) {
-    console.error("Error:", error);
+    console.error('Error:', error);
   }
 };
 
@@ -120,13 +120,13 @@ const fetchPostsWithGeolocation = async (): Promise<Post[]> => {
             const response = await fetch(
               `http://localhost/api/posts?` + params,
               {
-                credentials: "include",
-                method: "GET",
+                credentials: 'include',
+                method: 'GET',
                 headers: {
-                  "Content-Type": "application/json",
+                  'Content-Type': 'application/json',
                 },
                 // body: JSON.stringify(geolocationInfo),
-                cache: "no-store",
+                cache: 'no-store',
               }
             );
 
@@ -135,7 +135,7 @@ const fetchPostsWithGeolocation = async (): Promise<Post[]> => {
 
             if (!response.ok) {
               throw new Error(
-                "Network response was not ok " + response.statusText
+                'Network response was not ok ' + response.statusText
               );
             }
 
@@ -150,14 +150,14 @@ const fetchPostsWithGeolocation = async (): Promise<Post[]> => {
         }
       );
     } else {
-      reject(new Error("Geolocation is not supported by this browser."));
+      reject(new Error('Geolocation is not supported by this browser.'));
     }
   });
 };
 
 const PostList = () => {
   const [posts, setPosts] = useState<Post[]>([]); //状態を管理するためのuseStateフック
-  console.log("あああ");
+  console.log('あああ');
   console.log(posts);
 
   useEffect(() => {
@@ -166,28 +166,28 @@ const PostList = () => {
         const fetchedPosts = await fetchPostsWithGeolocation(); // getAllPostsを非同期で呼び出し
         setPosts(fetchedPosts);
       } catch (error) {
-        console.error("Error fetching posts:", error);
+        console.error('Error fetching posts:', error);
       }
     };
 
     fetchPosts();
-    console.log("いいいい");
+    console.log('いいいい');
   }, []);
 
   return (
     <>
       <div>
         {posts.map((post) => (
-          <div className="shadow my-4 flex flex-col bg-green-600" key={post.id}>
+          <div className='shadow my-4 flex flex-col bg-green-600' key={post.id}>
             <p>{post.title}</p>
             {post.image ? (
               <>
                 <Image
                   src={post.image}
-                  className="cursor-pointer object-contain"
+                  className='cursor-pointer object-contain'
                   width={120}
                   height={120}
-                  alt="image Description"
+                  alt='image Description'
                 />
               </>
             ) : null}
