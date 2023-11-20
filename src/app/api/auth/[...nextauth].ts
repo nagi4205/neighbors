@@ -10,25 +10,22 @@ export default NextAuth({
         username: { label: "ユーザ名", type: "text" },
         password: { label: "パスワード", type: "password" },
       },
-      async authorize(credentials, req) {
-        // `credentials`で定義した`username`、`password`が入っています。
-        // ここにロジックを追加して、資格情報からユーザーを検索します。
-        // 本来はバックエンドから認証情報を取得するイメージですが、ここでは定数を返しています。
-        // const user = await authenticationLogic(credentials?.username, credentials?.password);
-        const user = {
-          id: "1",
-          name: "J Smith",
-          email: "jsmith@example.com",
-          role: "admin",
-          backendToken: "backEndAccessToken",
-        };
+      authorize: async (credentials) => {
+        try {
+          const response = await axios.post("http://localhost/api/login", {
+            email: credentials.email,
+            password: credentials.password,
+          });
 
-        if (user) {
-          // 返されたオブジェクトはすべて、JWT の「user」プロパティに保存されます。
-          return user;
-        } else {
-          // 認証失敗の場合はnullを返却します。
-          return null;
+          const user = response.data;
+
+          if (user) {
+            return user;
+          } else {
+            return null;
+          }
+        } catch (error) {
+          throw new Error(error.response.data.message || "Login failed");
         }
       },
     }),
