@@ -71,10 +71,10 @@
   .leftsidebar {
     /* @apply sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto border-r border-r-[#1F1F22] bg-[#121417] pb-5 pt-28 max-md:hidden; */
     @apply sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto border-r pb-5 pt-20 max-md:hidden;
-    padding-left: max(
+    /* padding-left: max(
       0px,
       min(160px, calc((100vw - 1024px) * (160 / (1536 - 1024))))
-    );
+    ); */
   }
   .bottombar {
     @apply fixed bottom-0 z-10 w-full rounded-t-3xl bg-custom-gray p-4 backdrop-blur-lg xs:px-7 md:hidden;
