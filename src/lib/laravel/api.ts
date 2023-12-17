@@ -50,6 +50,28 @@ export async function searchPostsByFollowingUsers(): Promise<Post[]> {
   }
 }
 
+export async function searchCommunitiesByGeolocation(
+  geolocationData: GeolocationData
+): Promise<Community[]> {
+  // when not defined geolocationData, return empty array
+  if (!geolocationData) {
+    return [];
+  }
+
+  // const getXSRFTokenFromCookie = () => {
+  //   const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
+  //   return match ? match[1] : null;
+  // };
+  // const xsrfToken = getXSRFTokenFromCookie();
+  console.log(`lib/laravel/api.ts::geolocationData: ${geolocationData}`);
+  try {
+    const params = new URLSearchParams({
+      latitude: geolocationData.latitude.toString(),
+      longitude: geolocationData.longitude.toString(),
+      // radiusはlaravelで設定すればいいのでは？
+      // radius: '4',
+    });
+
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
@@ -66,13 +88,14 @@ export async function searchPostsByFollowingUsers(): Promise<Post[]> {
       headers: headers,
     });
 
-    const data = response.json();
-    console.log(data);
+    // APIリソースを利用することにより、レスポンスのデータを取得方法を変える必要があった。
+    const responseData = await response.json();
+    console.log(responseData);
     console.log(geolocationData);
     console.log(JSON.stringify(geolocationData));
 
-    const posts: Post[] = await data;
-    return posts;
+    const communities: Community[] = await responseData.data;
+    return communities;
   } catch (error) {
     console.error('An error occurred while fetching posts:', error);
     throw error;
