@@ -68,8 +68,9 @@ export async function createPost(post: NewPost) {
       credentials: 'include', // fetch では withCredentials の代わりに credentials: 'include' を使用します
       body: JSON.stringify({
         content: post.content,
-        latitude: post.GeolocationData?.latitude,
-        longitude: post.GeolocationData?.longitude,
+        latitude: post.locationData?.geolocationData.latitude,
+        longitude: post.locationData?.geolocationData.longitude,
+        location_name: post.locationData?.locationName?.locationName,
       }),
     });
 
