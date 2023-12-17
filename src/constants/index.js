@@ -2,40 +2,25 @@ import { Home, Search, PenLine, Heart, Users } from 'lucide-react';
 
 export const sidebarLists = [
   {
-    type: 'link',
     iconComponent: <Home />,
     route: '/home',
     label: 'Home',
   },
   {
-    type: 'link',
     iconComponent: <Search />,
     route: '/search',
     label: 'Search',
   },
   {
-    type: 'button',
-    iconComponent: <PenLine />,
-    route: '/create-thread',
-    label: 'Create Thread',
-  },
-  {
-    type: 'link',
     iconComponent: <Heart />,
     route: '/activity',
     label: 'Activity',
   },
   {
-    type: 'link',
     iconComponent: <Users />,
     route: '/communities',
     label: 'Communities',
   },
-  // {
-  //   imgURL: '/assets/user.svg',
-  //   route: '/profile',
-  //   label: 'Profile',
-  // },
 ];
 
 export const profileTabs = [
