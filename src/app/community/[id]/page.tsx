@@ -8,9 +8,8 @@ import { ChevronLeft } from 'lucide-react';
 import CommunityMessageCard from '@/components/cards/CommunityMessageCard';
 import { toast } from 'sonner';
 // import { Chat } from '@/lib/echo';
-import { Channel } from 'laravel-echo';
+import Echo, { Channel } from 'laravel-echo';
 import axios from 'axios';
-import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 
 const page = () => {
