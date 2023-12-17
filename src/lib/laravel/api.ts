@@ -5,6 +5,13 @@ import axios from 'axios';
 //   longitude: number;
 // };
 
+const headers: Record<string, string> = {
+  'Content-Type': 'application/json',
+  Accept: 'application/json',
+  //　これを含める必要があるようだ。でもsign-inでは必要がなかった。
+  'X-XSRF-TOKEN': 'XSRF-TOKEN',
+};
+
 // 変数名を変える必要があるんです`
 export async function searchPostsByGeolocation(
   geolocationData: GeolocationData
