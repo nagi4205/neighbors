@@ -59,7 +59,7 @@ function Topbar() {
     <nav className='topbar'>
       {/* // <nav className='fixed top-0 z-30 flex w-full items-center justify-between bg-[#121417] px-6 py-3'> */}
       <Link href='/' className='flex items-center gap-4'>
-        <Image src='assets/logo.svg' alt='logo' width={28} height={28} />
+        <Image src='assets/image.svg' alt='logo' width={28} height={28} />
         {/* <p className='text-heading3-bold text-[#FFFFFF] max-xs:hidden animate-bounce duration-50 repeat-[5]'> */}
         <p className='text-heading3-bold max-xs:hidden'>Neighbors</p>
       </Link>
