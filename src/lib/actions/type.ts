@@ -10,9 +10,13 @@ type GeolocationData = {
   longitude: number;
 };
 
+type LocationName = {
+  locationName: string;
+};
+
 type LocationData = {
   geolocationData: GeolocationData;
-  locationName: string;
+  locationName?: LocationName;
 };
 
 type User = {
@@ -21,15 +25,19 @@ type User = {
   profile_image: string;
 };
 
+enum FetchType {
+  followingUsers = 'followingUsers',
+}
+
 type Post = {
   id: string;
-  hasLiked: boolean;
-  image: string;
-  title: string;
+  hasLiked?: boolean;
+  image?: string;
   content: string;
-  created_at: string;
-  user: User;
-  likedCount: number;
+  createdAt: string;
+  author: User;
+  likedCount?: number;
+  locationName?: string;
 };
 
 type Community = {
@@ -43,7 +51,7 @@ type Community = {
 
 type NewPost = {
   content: string;
-  geolocationData?: GeolocationData; // friendだけの投稿の場合は、GeolocationDataは必要ないため。
+  locationData?: LocationData; // friendだけの投稿の場合は、GeolocationDataは必要ないため。
 };
 
 type NewCommunity = {
