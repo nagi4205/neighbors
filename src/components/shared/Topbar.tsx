@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAuthContext } from '../../app/context/auth';
@@ -21,6 +21,8 @@ import { CLIENT_STATIC_FILES_RUNTIME_POLYFILLS_SYMBOL } from 'next/dist/shared/l
 
 function Topbar() {
   // const { isLoggedIn } = useAuthContext();
+  const pathname = usePathname();
+  const isHidden = pathname === '/home' || pathname === '/friends';
   const { setTheme } = useTheme();
   const fetchUserInfo = async () => {
     console.log('on fetchUserInfo');
@@ -37,6 +39,11 @@ function Topbar() {
     }
     return res.json();
   };
+
+  // '/home' または '/friends' の場合は何もレンダリングしない
+  if (isHidden) {
+    return null;
+  }
 
   // const { data: user, isSuccess } = useQuery("userInfo", fetchUserInfo, {
   //   staleTime: 600000, // 10 minutes
