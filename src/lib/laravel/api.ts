@@ -27,6 +27,29 @@ export async function searchPostsByGeolocation(
       radius: '4',
     });
 
+export async function searchPostsByFollowingUsers(): Promise<Post[]> {
+  try {
+    console.log('fetching posts by following users');
+    const params = new URLSearchParams({
+      type: 'followingUsers',
+    });
+    const response = await fetch(`http://localhost/api/posts?${params}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: headers,
+    });
+
+    const data = response.json();
+    console.log(data);
+
+    const posts: Post[] = await data;
+    return posts;
+  } catch (error) {
+    console.error('An error occurred while fetching posts:', error);
+    throw error;
+  }
+}
+
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
@@ -37,7 +60,7 @@ export async function searchPostsByGeolocation(
     //   console.log('xsrfTokenがありました。:', xsrfToken);
     // }
 
-    const response = await fetch(`http://localhost/api/posts?${params}`, {
+    const response = await fetch(`http://localhost/api/communities?${params}`, {
       method: 'GET',
       credentials: 'include',
       headers: headers,
