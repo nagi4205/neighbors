@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useAuthContext } from '../../context/auth';
-import { useSession } from 'next-auth/react';
 
 type FormData = {
   email: string;
@@ -18,8 +17,6 @@ const SignIn = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-
-  const { data: session } = useSession();
 
   const getXSRFTokenFromCookie = () => {
     const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
