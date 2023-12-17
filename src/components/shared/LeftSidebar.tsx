@@ -31,8 +31,8 @@ import useAuth, { useUserData } from '@/lib/tanstack-query/authQuery';
 // not installed
 // import { SignOutButton, SignedIn, useAuth } from "@clerk/nextjs";
 
-import { sidebarLists } from '@/constants';
 import { useCreatePost, useGeolocation } from '@/lib/tanstack-query/queries';
+import { sidebarLists, PostIcon } from '@/constants';
 import { use, useState } from 'react';
 
 const LeftSidebar = () => {
@@ -104,103 +104,93 @@ const LeftSidebar = () => {
             Render my toast
           </button>
           {sidebarLists.map((list) => {
-            if (list.type === 'link') {
-              const isActive =
-                (pathname.includes(list.route) && list.route.length > 1) ||
-                pathname === list.route;
+            const isActive =
+              (pathname.includes(list.route) && list.route.length > 1) ||
+              pathname === list.route;
 
-              // not defined userId
-              // if (link.route === "/profile") link.route = `${link.route}/${userId}`;
+            // not defined userId
+            // if (link.route === "/profile") link.route = `${link.route}/${userId}`;
 
-              return (
-                <Link
-                  href={list.route}
-                  key={list.label}
-                  className={`leftsidebar_link ${isActive && 'bg-[#3b82f6] '}`}
-                >
-                  {/* <Image
+            return (
+              <Link
+                href={list.route}
+                key={list.label}
+                className={`leftsidebar_link ${isActive && 'bg-[#3b82f6] '}`}
+              >
+                {/* <Image
                     src={list.imgURL}
                     alt={list.label}
                     width={24}
                     height={24}
                   /> */}
-                  {list.iconComponent}
+                {list.iconComponent}
 
-                  {/* <p className='text-[#FFFFFF] max-lg:hidden'>{list.label}</p> */}
-                  <p className='max-lg:hidden'>{list.label}</p>
-                </Link>
-              );
-            }
+                {/* <p className='text-[#FFFFFF] max-lg:hidden'>{list.label}</p> */}
+                <p className='max-lg:hidden'>{list.label}</p>
+              </Link>
+            );
+          })}
 
-            if (list.type === 'button') {
-              return (
-                <Dialog key={list.label}>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant='ghost'
-                      className='leftsidebar_link'
-                      onClick={() => console.log('押しました。')}
-                    >
-                      {/* <Image
-                          src={list.imgURL}
-                          alt={list.label}
-                          width={24}
-                          height={24}
-                        /> */}
-                      {list.iconComponent}
-                      <p className='max-lg:hidden'>{list.label}</p>
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Are you sure absolutely sure?</DialogTitle>
-                      <DialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete your account and remove your data from our
-                        servers..
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className='grid gap-4 py-4'>
-                      <div className='grid grid-cols-4 items-center gap-4'>
-                        <Label htmlFor='name' className='text-right'>
-                          Name
-                        </Label>
-                        <Input
-                          id='name'
-                          defaultValue='Pedro Duarte'
-                          className='col-span-3'
-                          onChange={(e) => setContent(e.target.value)}
-                        />
-                      </div>
-                      <div className='grid grid-cols-4 items-center gap-4'>
-                        <Label htmlFor='username' className='text-right'>
-                          Username
-                        </Label>
-                        <Input
-                          id='username'
-                          defaultValue='@peduarte'
-                          className='col-span-3'
-                        />
-                      </div>
-                    </div>
-                    <DialogFooter>
-                      <DialogClose asChild>
-                        <Button
-                          type='submit'
-                          onClick={handleSubmit}
-                          disabled={
-                            geolocationData?.latitude === undefined ||
-                            geolocationData?.longitude === undefined ||
-                            !content
-                          }
-                        >
-                          Post
-                        </Button>
-                      </DialogClose>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              );
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                variant='outline'
+                className='relative flex justify-start gap-4 rounded-3xl py-4 bg-custom-green hover:bg-custom-green hover:opacity-80'
+                onClick={() => console.log('押しました。')}
+              >
+                {PostIcon.iconComponent}
+                <p className='max-lg:hidden'>{PostIcon.label}</p>
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Are you sure absolutely sure?</DialogTitle>
+                <DialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your account and remove your data from our servers..
+                </DialogDescription>
+              </DialogHeader>
+              <div className='grid gap-4 py-4'>
+                <div className='grid grid-cols-4 items-center gap-4'>
+                  <Label htmlFor='name' className='text-right'>
+                    Name
+                  </Label>
+                  <Input
+                    id='name'
+                    defaultValue='Pedro Duarte'
+                    className='col-span-3'
+                    onChange={(e) => setContent(e.target.value)}
+                  />
+                </div>
+                <div className='grid grid-cols-4 items-center gap-4'>
+                  <Label htmlFor='username' className='text-right'>
+                    Username
+                  </Label>
+                  <Input
+                    id='username'
+                    defaultValue='@peduarte'
+                    className='col-span-3'
+                  />
+                </div>
+              </div>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button
+                    type='submit'
+                    onClick={handleSubmit}
+                    disabled={
+                      geolocationData?.latitude === undefined ||
+                      geolocationData?.longitude === undefined ||
+                      !content
+                    }
+                  >
+                    Post
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+          {/* 
               // const isActive =
               //   (pathname.includes(list.route) && list.route.length > 1) ||
               //   pathname === list.route;
@@ -223,9 +213,7 @@ const LeftSidebar = () => {
 
               //     <p className='text-light-1 max-lg:hidden'>{list.label}</p>
               //   </Link>
-              // );
-            }
-          })}
+              // ); */}
         </div>
 
         {user ? (
