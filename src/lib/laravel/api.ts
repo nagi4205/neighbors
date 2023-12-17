@@ -86,3 +86,35 @@ export async function createPost(post: NewPost) {
     console.error('Error:', error);
   }
 }
+
+export async function createCommunity(community: NewCommunity) {
+  console.log('Sending Post Data:', community);
+  try {
+    const response = await fetch('http://localhost/api/communities', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      credentials: 'include', // fetch では withCredentials の代わりに credentials: 'include' を使用します
+      body: JSON.stringify({
+        name: community.name,
+        description: community.description,
+        latitude: community.geolocationData.latitude,
+        longitude: community.geolocationData.longitude,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok.');
+      //エラー表示
+    }
+
+    const createdCommunity = await response.json();
+    console.log(createdCommunity);
+    // toast('投稿しました。');
+  } catch (error) {
+    console.log('投稿に失敗しました。');
+    console.error('Error:', error);
+  }
+}
