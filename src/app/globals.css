@@ -82,6 +82,10 @@
   .bottombar_container {
     @apply flex items-center justify-between gap-3 xs:gap-5;
   }
+  /* thread card  */
+  .thread-card_bar {
+    @apply relative mt-2 w-0.5 grow rounded-full bg-neutral-800;
+  }
   .leftsidebar_link {
     @apply relative flex justify-start gap-4 rounded-lg p-4;
   }
