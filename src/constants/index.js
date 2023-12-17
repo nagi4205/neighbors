@@ -23,6 +23,11 @@ export const sidebarLists = [
   },
 ];
 
+export const PostIcon = {
+  iconComponent: <PenLine />,
+  label: 'ポストする',
+};
+
 export const profileTabs = [
   { value: 'threads', label: 'Threads', icon: '/assets/reply.svg' },
   { value: 'replies', label: 'Replies', icon: '/assets/members.svg' },
