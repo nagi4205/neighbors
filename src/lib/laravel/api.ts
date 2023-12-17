@@ -34,6 +34,31 @@ export async function searchPostsByGeolocation(
       radius: '4',
     });
 
+    // if (xsrfToken) {
+    //   headers['X-XSRF-TOKEN'] = xsrfToken;
+    //   console.log('xsrfTokenがありました。:', xsrfToken);
+    // }
+
+    // axiosに変更
+    const response = await axios(`http://localhost/api/posts?${params}`, {
+      method: 'GET',
+      withCredentials: true,
+      headers: headers,
+    });
+
+    const data = response.data;
+    console.log(data);
+    console.log(geolocationData);
+    console.log(JSON.stringify(geolocationData));
+
+    const posts: Post[] = await data;
+    return posts;
+  } catch (error) {
+    console.error('An error occurred while fetching posts:', error);
+    throw error;
+  }
+}
+
 export async function searchPostsByFollowingUsers(): Promise<Post[]> {
   try {
     console.log('fetching posts by following users');
