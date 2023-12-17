@@ -37,11 +37,12 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Topbar />
+            <main className='flex flex-row container mx-auto max-w-[1280px]'>
+              {/* <div className='w-full h-full flex justify-center items-center relative bg-white text-black dark:bg-black dark:text-white'>
               <div className='xl:max-w-[70vw] w-full h-full flex relative'> */}
-                <section className='flex min-h-screen flex-1 flex-col items-center px-6 pb-10 pt-28 max-md:pb-32 sm:px-10'>
-                  <div className='w-full max-w-4xl'>{children}</div>
-              <Toaster position='top-center' />
               <LeftSidebar />
+              <section className='flex min-h-screen max-w-[600px] flex-1 flex-col items-center border-x pb-10 max-md:pb-32'>
+                <div className='w-full'>{children}</div>
               </section>
               {/* @ts-ignore */}
               <RightSidebar />
