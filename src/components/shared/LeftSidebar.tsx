@@ -27,6 +27,8 @@ import {
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 
+import useAuth, { useUserData } from '@/lib/tanstack-query/authQuery';
+
 // not installed
 // import { SignOutButton, SignedIn, useAuth } from "@clerk/nextjs";
 
@@ -36,6 +38,12 @@ import { use, useState } from 'react';
 
 const LeftSidebar = () => {
   const [content, setContent] = useState<string | null>(null);
+  const { logout } = useAuth();
+  const {
+    data: user,
+    isLoading: isUserLoading,
+    isError: isUserError,
+  } = useUserData();
   // const { toast } = useToast();
 
   console.log('on LeftSidebar');
@@ -222,7 +230,7 @@ const LeftSidebar = () => {
           })}
         </div>
 
-        {session ? (
+        {user ? (
           <div className='flex item-center justify-center'>
             {/* <p className='text-light-1'>Welcome, {session.user.name}!</p> */}
             {/* <Image
@@ -235,9 +243,9 @@ const LeftSidebar = () => {
               <HoverCardTrigger>
                 <div className='flex'>
                   <Avatar>
-                    <AvatarImage src={session.user.image} />
+                    {/* <AvatarImage src={session.user.image} /> */}
                   </Avatar>
-                  <div>{session.user.name}</div>
+                  <div>{user.name}</div>
                 </div>
               </HoverCardTrigger>
               <HoverCardContent sideOffset={20} side='right'>
@@ -257,20 +265,34 @@ const LeftSidebar = () => {
             </HoverCard>
           </div>
         ) : (
-          <a href='/auth/signin'>Sign in</a>
+          <div className='mt-4 px-6'>
+            <div className='flex cursor-pointer gap-4 p-4'>
+              <Image
+                src='/assets/logout.svg'
+                alt='logout'
+                width={24}
+                height={24}
+              />
+              <Link href='/sign-in' className='max-lg:hidden'>
+                Sign in
+              </Link>
+            </div>
+          </div>
         )}
 
         <div className='mt-10 px-6'>
-          <div className='flex cursor-pointer gap-4 p-4'>
-            <Image
-              src='/assets/logout.svg'
-              alt='logout'
-              width={24}
-              height={24}
-            />
+          <button onClick={() => logout()}>
+            <div className='flex cursor-pointer gap-4 p-4'>
+              <Image
+                src='/assets/logout.svg'
+                alt='logout'
+                width={24}
+                height={24}
+              />
 
-            <p className='max-lg:hidden'>Logout</p>
-          </div>
+              <p className='max-lg:hidden'>Logout</p>
+            </div>
+          </button>
 
           {/* <SignedIn>
         <SignOutButton signOutCallback={() => router.push("/sign-in")}>
