@@ -57,9 +57,9 @@ function Home({
   // if (!userInfo?.onboarded) redirect("/onboarding");
   return (
     <>
-      <h1 className='head-text text-left'>Home</h1>
+      {/* // この部分をlaoutファイルに委譲する */}
 
-      <section className='mt-9 flex flex-col gap-4'>
+      <section className='mt-9 flex flex-col'>
         <p className='no-result'>No threads found</p>
         {/* <PostList /> */}
 
@@ -86,44 +86,43 @@ function Home({
           投稿
         </button> */}
 
-        {/* あとで消す消してもいい */}
         {/* <Dialog.Root>
           <Dialog.Trigger>
-            <Button className="fixed bottom-5 right-5 bg-blue-500 text-white p-4 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <Button className='fixed bottom-5 right-5 bg-red-500 text-white p-4 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'>
               投稿
             </Button>
           </Dialog.Trigger>
 
           <Dialog.Content style={{ maxWidth: 450 }}>
             <Dialog.Title>Edit profile</Dialog.Title>
-            <Dialog.Description size="2" mb="4">
+            <Dialog.Description size='2' mb='4'>
               Make changes to your profile.
             </Dialog.Description>
 
-            <Flex direction="column" gap="3">
+            <Flex direction='column' gap='3'>
               <label>
-                <Text as="div" size="2" mb="1" weight="bold">
+                <Text as='div' size='2' mb='1' weight='bold'>
                   Name
                 </Text>
                 <TextField.Input
-                  defaultValue="Freja Johnsen"
-                  placeholder="Enter your full name"
+                  defaultValue='Freja Johnsen'
+                  placeholder='Enter your full name'
                 />
               </label>
               <label>
-                <Text as="div" size="2" mb="1" weight="bold">
+                <Text as='div' size='2' mb='1' weight='bold'>
                   Email
                 </Text>
                 <TextField.Input
-                  defaultValue="freja@example.com"
-                  placeholder="Enter your email"
+                  defaultValue='freja@example.com'
+                  placeholder='Enter your email'
                 />
               </label>
             </Flex>
 
-            <Flex gap="3" mt="4" justify="end">
+            <Flex gap='3' mt='4' justify='end'>
               <Dialog.Close>
-                <Button variant="soft" color="gray">
+                <Button variant='soft' color='gray'>
                   Cancel
                 </Button>
               </Dialog.Close>
