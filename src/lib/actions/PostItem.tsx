@@ -31,10 +31,10 @@ const PostItem: React.FC<
   id,
   hasLiked,
   image,
-  title,
   content,
-  created_at,
-  user,
+  createdAt,
+  locationName,
+  author,
   likedCount,
   setNotification,
   newPost,
@@ -64,11 +64,11 @@ const PostItem: React.FC<
         console.log(response.data.status);
         console.log(`status Value: ${response.data.status}`);
         setLiked(true);
-        setLikedNumber(likedNumber + 1);
+        // setLikedNumber(likedNumber + 1);
       } else if (response.data.status === 'unliked') {
         console.log('status Value: ${response.data.status}');
         setLiked(false);
-        setLikedNumber(likedNumber - 1);
+        // setLikedNumber(likedNumber - 1);
       } else {
         throw new Error('Unexpected status Value: ${response.data.status}');
       }
@@ -164,7 +164,7 @@ const PostItem: React.FC<
 
     // エラーハンドリングや追加の処理を行う場合
     deleteRequest()
-      .then((response) => {
+      .then((response: any) => {
         if (response.data.status !== 'success') {
           console.error(`Unexpected status Value: ${response.data.status}`);
         }
@@ -205,30 +205,31 @@ const PostItem: React.FC<
     }
   };
 
-  const handleNavigateToPostDetail = () => {
-    // 投稿の詳細ページへ遷移する
-    router.push(`${user.name}/post/${id}`);
-  };
+  // const handleNavigateToPostDetail = () => {
+  //   // 投稿の詳細ページへ遷移する
+  //   router.push(`${author.name}/post/${id}`);
+  // };
 
   return (
     <>
       <article
-        className='flex w-full flex-col rounded-xl p-7 hover:bg-blue-50 dark:hover:bg-gray-950'
-        onClick={handleNavigateToPostDetail}
+        className='flex w-full flex-col border-y py-2 pl-4 pr-4 hover:bg-blue-50 dark:hover:bg-blue-950'
+        // onClick={handleNavigateToPostDetail}
       >
         <div className='flex items-start justify-between'>
           <div className='flex w-full flex-1 flex-row gap-4'>
             <div className='flex flex-col items-center'>
-              <Link href='/' className='relative h-11 w-11'>
+              <Link href='/' className='mt-2'>
                 <Image
                   src={
-                    user
-                      ? user.profile_image
+                    author.profile_image
+                      ? author.profile_image
                       : '/20230630_channels4_profile.jpg'
                   }
                   // src="/20230630_channels4_profile.jpg"
                   alt='user_community_image'
-                  fill
+                  width={40}
+                  height={40}
                   className='cursor-pointer rounded-full'
                   onClick={(e) => e.stopPropagation()}
                 />
@@ -245,12 +246,17 @@ const PostItem: React.FC<
 
               {/* あとで消す消してもいい */}
               <div className='flex justify-between gap-x-8'>
-                <Link href='/' className='w-fit'>
-                  <h4 className='cursor-pointer text-base-semibold text-light-1'>
-                    {/* ↓どうするか考える */}
-                    {user ? user.name : 'No Name'}
-                  </h4>
-                </Link>
+                <div className='flex items-center gap-x-2'>
+                  <Link href='/' className='w-fit'>
+                    <h4 className='cursor-pointer text-base-semibold text-light-1'>
+                      {/* ↓どうするか考える */}
+                      {author ? author.name : 'No Name'}
+                    </h4>
+                  </Link>
+                  <div className='text-small-regular text-gray-400'>
+                    {createdAt}
+                  </div>
+                </div>
 
                 <div>
                   <div>
@@ -307,7 +313,10 @@ const PostItem: React.FC<
                   alt='image Description'
                 />
               ) : null}
-              <p className='mt-2 text-small-regular text-light-2'>{content}</p>
+              <p className='my-2 text-small-regular text-light-2'>{content}</p>
+              <div className='flex flex-row-reverse text-small-regular opacity-60 pr-4 '>
+                {locationName}
+              </div>
 
               <div className='mb-10 mt-5 flex flex-col gap-3'>
                 <div className='flex gap-3.5'>
@@ -343,8 +352,8 @@ const PostItem: React.FC<
                     className='cursor-pointer object-contain'
                   />
                 </div>
-
-                <div className=''>
+                {/* // コメントアウト消す予定 */}
+                {/* <div className=''>
                   <button onClick={handleLike} className='mx-8'>
                     {liked ? (
                       'いいねしました'
@@ -359,8 +368,11 @@ const PostItem: React.FC<
                     )}
                   </button>
                   <p>いいね数：{likedNumber}</p>
-                  <p>{created_at}</p>
-                </div>
+                </div> */}
+
+                {/* <p>{locationName? locationName : '場所不定'}</p> */}
+                {/* <p>{locationName != null ? locationName : '場所不定'}</p> */}
+
                 {/* {isComment && comments.length > 0 && (
                     <Link href={`/thread/${id}`}>
                       <p className="mt-1 text-subtle-medium text-gray-1">
@@ -375,9 +387,9 @@ const PostItem: React.FC<
         </div>
       </article>
 
-      <div className='shadow my-4 flex flex-col text-light-1'>
-        {/* <p>{title}</p> */}
-        {/* {image ? (
+      {/* <div className='shadow my-4 flex flex-col text-light-1'> */}
+      {/* <p>{title}</p> */}
+      {/* {image ? (
           <Image
             src={image}
             className="cursor-pointer object-contain"
@@ -386,11 +398,11 @@ const PostItem: React.FC<
             alt="image Description"
           />
         ) : null} */}
-        {/* <p>{created_at}</p> */}
-        {/* <p>{content}</p> */}
-        {/* <button onClick={handleLike}>{liked ? "いいね" : "not いいね"}</button>
+      {/* <p>{created_at}</p> */}
+      {/* <p>{content}</p> */}
+      {/* <button onClick={handleLike}>{liked ? "いいね" : "not いいね"}</button>
         <p>{likedNumber}</p> */}
-      </div>
+      {/* </div> */}
     </>
   );
 };

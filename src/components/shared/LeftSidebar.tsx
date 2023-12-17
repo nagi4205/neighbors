@@ -31,8 +31,12 @@ import useAuth, { useUserData } from '@/lib/tanstack-query/authQuery';
 // not installed
 // import { SignOutButton, SignedIn, useAuth } from "@clerk/nextjs";
 
-import { useCreatePost, useGeolocation } from '@/lib/tanstack-query/queries';
 import { sidebarLists, PostIcon } from '@/constants';
+import {
+  useGeolocation,
+  useReverseGeocoding,
+  useCreatePost,
+} from '@/lib/tanstack-query/queries';
 import { use, useState } from 'react';
 
 const LeftSidebar = () => {
@@ -57,6 +61,12 @@ const LeftSidebar = () => {
   console.log(isGeoLoading);
 
   const {
+    data: locationData,
+    isLoading,
+    isError,
+  } = useReverseGeocoding(geolocationData);
+
+  const {
     mutateAsync: createPost,
     isLoading: isLoadingCreate,
     isSuccess: isSuccessCreate,
@@ -69,7 +79,7 @@ const LeftSidebar = () => {
     console.log('L63.on handleSubmit');
     const newPost = await createPost({
       content: content as string,
-      GeolocationData: geolocationData,
+      locationData: locationData,
     });
 
     if (isSuccessCreate) {
@@ -97,12 +107,32 @@ const LeftSidebar = () => {
             href='/'
             className='relative flex justify-start gap-4 rounded-lg p-4'
           >
-            <Image src='assets/logo.svg' alt='logo' width={28} height={28} />
+            <Image src='assets/logo.svg' alt='logo' width={40} height={40} />
             <p className='text-heading3-bold max-lg:hidden'>Neighbors</p>
           </Link>
-          <button onClick={() => toast('This is a sonner toast')}>
+
+          <div className='relative flex w-full max-w-[20rem] flex-col rounded-xl bg-gradient-to-tr from-pink-600 to-pink-400 bg-clip-border p-8 text-white shadow-md shadow-pink-500/40'>
+            <p className='text-body-semibold opacity-70'>あなたの現在地は、</p>
+            <p className='w-48 h-2 text-heading3-bold max-lg:hidden'>
+              {locationData?.locationName ? (
+                <>
+                  {/* {locationData.geolocationData.latitude}
+                <br />
+                {locationData.geolocationData.longitude}
+                <br />
+              */}
+
+                  {locationData.locationName.locationName}
+                </>
+              ) : (
+                'fetching...'
+              )}
+            </p>
+          </div>
+
+          {/* <button onClick={() => toast('This is a sonner toast')}>
             Render my toast
-          </button>
+          </button> */}
           {sidebarLists.map((list) => {
             const isActive =
               (pathname.includes(list.route) && list.route.length > 1) ||

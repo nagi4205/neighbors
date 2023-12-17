@@ -57,6 +57,7 @@ export const getGeolocation = async (): Promise<GeolocationData> => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           resolve({
+            // クライアントでデータを丸めている
             latitude: parseFloat(position.coords.latitude.toFixed(3)),
             longitude: parseFloat(position.coords.longitude.toFixed(3)),
           });
@@ -69,6 +70,41 @@ export const getGeolocation = async (): Promise<GeolocationData> => {
       reject(new Error('Geolocation is not supported by this browser.'));
     }
   });
+};
+
+const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+
+// 地名を取得するための関数
+export const reverseGeocoding = async (
+  geolocationData: GeolocationData
+): Promise<LocationData> => {
+  console.log(GOOGLE_MAPS_API_KEY);
+  const response = await fetch(
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${geolocationData.latitude},${geolocationData.longitude}&key=${GOOGLE_MAPS_API_KEY}&language=ja`
+  );
+  const data = await response.json();
+  console.log(data);
+  if (!data.results || data.results.length === 0) {
+    throw new Error('No results found');
+  }
+
+  let components = [];
+  for (let component of data.results[0].address_components) {
+    if (
+      component.types.includes('administrative_area_level_1') ||
+      component.types.includes('locality') ||
+      component.types.includes('sublocality_level_1') ||
+      component.types.includes('sublocality_level_2')
+    ) {
+      console.log(components);
+      components.unshift(component.long_name); // componentsという配列の先頭にcomponent.long_nameを追加
+      console.log(components);
+    }
+  }
+  return {
+    geolocationData,
+    locationName: { locationName: components.join(' ') },
+  };
 };
 
 const handleLikeEvent = async (postId: string, userId: string) => {
