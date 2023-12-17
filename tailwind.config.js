@@ -246,6 +246,7 @@ module.exports = {
         },
         // Custom colorsを追加butombar
         'custom-gray': 'rgba(16, 16, 18, 0.60)',
+        'custom-green': '#2dc653',
       },
       borderRadius: {
         lg: 'var(--radius)',
