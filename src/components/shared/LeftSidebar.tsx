@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import apple from '@components/shared/LeftSidebar/apple.svg';
 import DialogPage from '../dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -49,7 +48,6 @@ const LeftSidebar = () => {
   console.log('on LeftSidebar');
   const router = useRouter();
   const pathname = usePathname();
-  const { data: session } = useSession();
 
   const {
     data: geolocationData,
