@@ -48,6 +48,7 @@ export default function RootLayout({
               <RightSidebar />
             </main>
             <Bottombar />
+            <Toaster position='top-center' richColors visibleToasts={1} />
           </ThemeProvider>
         </QueryProvider>
       </body>
