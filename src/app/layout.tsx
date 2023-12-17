@@ -6,7 +6,6 @@ import LeftSidebar from '@/components/shared/LeftSidebar';
 import RightSidebar from '@/components/shared/RightSidebar';
 import Bottombar from '@/components/shared/Bottombar';
 import { Theme } from '@radix-ui/themes';
-// import { Toaster } from '@/components/ui/toaster';
 // import { AuthProvider } from './context/auth';
 import { Toaster } from 'sonner';
 import { ThemeProvider } from '@/components/theme-provider';
