@@ -39,8 +39,8 @@ const page = () => {
 
       const newEcho = new Echo({
         broadcaster: 'pusher',
-        key: process.env.NEXT_PUBLIC_PUSHER_APP_KEY,
-        cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER,
+        key: process.env.PUSHER_APP_KEY,
+        cluster: process.env.PUSHER_APP_CLUSTER,
         wsPort: 443,
         enableStats: false,
         encrypted: true,
