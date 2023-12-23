@@ -1,11 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-type themeProps = 'light' | 'dark';
+interface LoaderProps {
+  size: number;
+}
 
-const Loader = () => {
-  const [theme, setTheme] = useState<themeProps>('light');
+const Loader: React.FC<LoaderProps> = ({ size }) => {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
     const isDarkMode = document.documentElement.classList.contains('dark');
@@ -21,8 +23,8 @@ const Loader = () => {
             : '/assets/loader-light-theme.svg'
         }
         alt='loader'
-        width={24}
-        height={24}
+        width={size}
+        height={size}
         className='animate-spin'
       />
     </div>
